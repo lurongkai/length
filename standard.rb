@@ -13,28 +13,27 @@ class Worker
       else
         case @p
         when 0
-          a = line.split(' ')
-          @rule[a[1]] = a[3]
+          factor= line.split(' ')
+          @rule[factor[1]] = factor[3]
         when 1
-          b = line.split(" ")
+          factor = line.split(" ")
           if (line.include? '+') || (line.include? '-')
-            c = []
-            b.each_with_index do |array,index|
+            equation = []
+            factor.each_with_index do |array,index|
               if array == '+' || array == '-'
-                c.push(array)
+                equation.push(array)
               elsif !(array =~ /^[a-z]+$/)
-                d = array.to_f
-                unit = singularize(b[index+1])
-                c.push( d * @rule[unit].to_f)
+                unit = singularize(factor[index+1])
+                equation.push( array.to_f * @rule[unit].to_f)
               end
             end
-            c = eval(c.join)
+             answer = eval(equation.join)
           else
-            unit = singularize(b[1])
-            c = b[0].to_f * @rule[unit].to_f
+            unit = singularize(factor[1])
+            answer = factor[0].to_f * @rule[unit].to_f
           end
-          c = format("%.2f",c)
-          @result.push(c.to_s+" m\n")
+          answer = format("%.2f",answer)
+          @result.push(answer.to_s+" m\n")
         end
       end
     end 
@@ -42,32 +41,19 @@ class Worker
   end
 
   def singularize(s)
-      case s
-      when 'miles'
-        'mile'
-      when 'yards'
-        'yard'
-      when 'inches'
-        'inch'
-      when 'feet'
-        'foot'
-      when 'faths'
-        'fath'
-      when 'furlongs'
-        'furlong'
-      else
-        s
-      end
+    return s if @rule[s]
+    z = s.gsub(/s$/,'')
+    return z if @rule[z]
+    z = s.gsub(/es$/,'') 
+    return z if @rule[z]
+    z = s.gsub(/ee/,'oo')
+    return z if @rule[z]
+    s  
   end
 
 end
 
-File.open("input.txt") do |file|
-  new_work = Worker.new(file)
-  @rs = new_work.run
-end
-
+new_work = Worker.new(File.open("input.txt"))
+@rs = new_work.run
 file = File.new("output.txt","w")
-@rs.each do |r|
-  file.puts(r)
-end 
+file.puts(@rs)
