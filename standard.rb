@@ -1,4 +1,3 @@
-require 'pathname'
 class Worker
   def initialize(inp)
     @in = inp
@@ -74,8 +73,7 @@ File.open("input.txt") do |file|
   @result = new_work.run
 end
 
-path = Pathname.new(File.dirname(__FILE__)).realpath
-file = File.new(path + "output.txt","w")
+file = File.new("output.txt","w")
 @result.each do |r|
   file.puts(r)
 end 
