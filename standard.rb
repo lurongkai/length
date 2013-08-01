@@ -16,21 +16,15 @@ class Worker
         when 0
           @rule[factor[1]] = factor[3]
         when 1
-          if (line.include? '+') || (line.include? '-')
-            equation = []
-            factor.each_with_index do |array,index|
-              if array == '+' || array == '-'
-                equation.push(array)
-              elsif !(array =~ /^[a-z]+$/)
-                unit = singularize(factor[index+1])
-                equation.push( array.to_f * @rule[unit].to_f)
-              end
+          equation = []
+          factor.each_with_index do |array,index|
+            if !(array =~ /^[a-z]+$/ || array =~ /\+|\-/)
+              unit = singularize(factor[index+1])
+              equation.push( array.to_f * @rule[unit].to_f)
             end
-            answer = eval(equation.join)
-          else
-            unit = singularize(factor[1])
-            answer = factor[0].to_f * @rule[unit].to_f
+            equation.push(array) if array =~ /\+|\-/
           end
+          answer = eval(equation.join)
           @result.push(format("%.2f",answer).to_s+" m\n")
         end
       end
