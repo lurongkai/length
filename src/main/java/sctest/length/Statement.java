@@ -5,5 +5,9 @@ public abstract class Statement {
 
 	private Type type;
 	
+	public Statement(Type type) {
+		this.type = type;
+	}
+	
 	public Type getType() {return type;};
 }

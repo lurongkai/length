@@ -1,35 +1,47 @@
 package sctest.length;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 public class Length {
-	private static String defaultFile="input.txt";
-	/**
-	 * @param args
-	 */
+	private static String defaultInputFile="input.txt";
+	private static String defaultOutputFile="output.txt";
+
 	public static void main(String[] args) {
 		Length length = new Length();
-		if (args.length==0) 
-			length.process(defaultFile);
-		else
-			length.process(args[0]);
+		try {
+			if (args.length==0) 
+				length.process(defaultInputFile);
+			else
+				length.process(args[0]);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void process(String fileName) {
+	public void process(String fileName) throws FileNotFoundException, IOException {
 		Parser parser = null;
 		parser = new Parser(fileName);
 		while (parser.hasNext()) {
 			Statement stmt = parser.next();
 			switch(stmt.getType()) {
 			case DEFINITION:
-				addDef
+				addDefinition((Definition)stmt);
 				break;
 			case EXPRESSION:
+				calExpression((Expression)stmt);
 				break;
 			default: // don't process blank
 				break;
 			}
-			double result = Calculator.calculate(parser.next());
 		}
-
+	}
+	
+	private void addDefinition(Definition def) {
+		
+	}
+	
+	private void calExpression(Expression exp) {
 		
 	}
 
