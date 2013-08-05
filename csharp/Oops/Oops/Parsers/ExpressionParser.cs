@@ -13,7 +13,7 @@ namespace Oops
                 string operatorRaw = parseUtil.ReadToken();
                 Operator theOperator = Operator.Parse(operatorRaw);
                 ValueExpression rightExpression = ParseValueExpression(parseUtil);
-                finalExpression = new OperatorExpression(firstExpression, theOperator, rightExpression);
+				finalExpression = new OperatorExpression(finalExpression, theOperator, rightExpression);
             }
 
             return finalExpression;

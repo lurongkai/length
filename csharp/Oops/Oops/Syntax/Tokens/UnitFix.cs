@@ -10,10 +10,12 @@ namespace Oops.Syntax.Tokens
 
         static UnitFix()
         {
-            UnitFixList.Add(new Tuple<string, string>("inch", "inches"));
-            UnitFixList.Add(new Tuple<string, string>("foot", "feet"));
-            UnitFixList.Add(new Tuple<string, string>("mile", "miles"));
-            UnitFixList.Add(new Tuple<string, string>("fath", "faths"));
+			UnitFixList.Add(new Tuple<string, string>("mile", "miles"));
+			UnitFixList.Add(new Tuple<string, string>("yard", "yards"));
+			UnitFixList.Add(new Tuple<string, string>("inch", "inches"));
+			UnitFixList.Add(new Tuple<string, string>("foot", "feet"));
+			UnitFixList.Add(new Tuple<string, string>("fath", "faths"));
+			UnitFixList.Add(new Tuple<string, string>("furlong", "furlongs"));
         }
 
         public static string FixUnit(string raw)
