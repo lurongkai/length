@@ -1,5 +1,14 @@
 #length
 
+##Regards
+Merge了一些个人认为优秀的实现，请无视我自己csharp的实现。
+
+* [stfairy](https://github.com/stfairy/length) (Ruby)
+* [ChanceDoor](https://github.com/ChanceDoor/length) (Ruby)
+* [zn0315](https://github.com/zn0315/length) (Java)
+* [mailgyc](https://github.com/mailgyc/length) (Python)
+* [zwy1135](https://github.com/zwy1135/length) (Python)
+
 ##题目介绍
 您要做的是一个长度单位转化和计算工具，能够把不同的长度单位转换为标准长度（米），并且可以在不同单位之间进行加减运算。
 
