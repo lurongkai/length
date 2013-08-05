@@ -3,32 +3,35 @@ using System.IO;
 
 namespace Oops
 {
-	class MainClass
-	{
-		private const string ResultFileName = "output.txt";
-		public static void Main(string[] args) {
-			var filePath = args[0];
-			//var filePath = @"input.txt";
-			if (!File.Exists(filePath)) {
-				throw new InvalidProgramException("guys, please give me file location");
-			}
+    internal class MainClass
+    {
+        private const string ResultFileName = "output.txt";
 
-			IParser parser = new LengthUnitParser();
-			var director = new LengthConvertionDirector(parser);
+        public static void Main(string[] args)
+        {
+            string filePath = args[0];
+            if (!File.Exists(filePath))
+            {
+                throw new InvalidProgramException("guys, please give me file location");
+            }
 
-			director.ParseFile(filePath);
+            IParser parser = new LengthUnitParser();
+            var director = new LengthConvertionDirector(parser);
 
-		    var resultFilePath = GetResultFilePath(new FileInfo(filePath).Directory.FullName);
-		    if (File.Exists(resultFilePath))
-		    {
-		        File.Delete(resultFilePath);
-		    }
+            director.ParseFile(filePath);
+
+            string resultFilePath = GetResultFilePath(new FileInfo(filePath).Directory.FullName);
+            if (File.Exists(resultFilePath))
+            {
+                File.Delete(resultFilePath);
+            }
 
             director.WriteFileResult(resultFilePath);
-		}
+        }
 
-		private static string GetResultFilePath(string basePath){
-			return Path.Combine(basePath, ResultFileName);
-		}
-	}
+        private static string GetResultFilePath(string basePath)
+        {
+            return Path.Combine(basePath, ResultFileName);
+        }
+    }
 }

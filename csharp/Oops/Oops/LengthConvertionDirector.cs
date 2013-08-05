@@ -1,60 +1,70 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Oops
 {
-	public class LengthConvertionDirector
-	{
-		private readonly IParser _parser;
-		private List<Expression> _expressionResult;
+    public class LengthConvertionDirector
+    {
+        private readonly List<Expression> _expressionResult;
+        private readonly IParser _parser;
 
-		public LengthConvertionDirector(IParser parser) {
-			_parser = parser;
-			_expressionResult = new List<Expression>();
-		}
+        public LengthConvertionDirector(IParser parser)
+        {
+            _parser = parser;
+            _expressionResult = new List<Expression>();
+        }
 
-		public void ParseFile(string filePath) {
-			var sourcelines = File.ReadLines(filePath);
+        public void ParseFile(string filePath)
+        {
+            var sourcelines = File.ReadLines(filePath);
 
-			foreach (var line in sourcelines) {
-			    if (string.IsNullOrEmpty(line))
-			    {
-			        continue;
-			    }
-			    if (ParseUtil.IsConvertion(line)) {
-					ProcessConvertion(line);
-				    continue;
-				}
-				if (ParseUtil.IsExpression(line)) {
-					ProcessExpression(line);
-				    continue;
-				}
-					
-				throw new InvalidOperationException("what hell...");
-			}
-		}
+            foreach (string line in sourcelines)
+            {
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
+                if (ParseUtil.IsConvertion(line))
+                {
+                    ProcessConvertion(line);
+                    continue;
+                }
+                if (ParseUtil.IsExpression(line))
+                {
+                    ProcessExpression(line);
+                    continue;
+                }
 
-		public void WriteFileResult(string resultFilePath) {
-			using (var file = new FileStream(resultFilePath, FileMode.OpenOrCreate)) {
-				var resultFormatter = new ResultFomatter(_expressionResult);
-				resultFormatter.FormatTo(file);
-			}
-		}
+                throw new InvalidOperationException("what hell...");
+            }
+        }
 
-		private void ProcessConvertion(string raw) {
-			var convertion = _parser.ParseConvertion(raw);
+        public void WriteFileResult(string resultFilePath)
+        {
+            using (var file = new FileStream(resultFilePath, FileMode.OpenOrCreate))
+            {
+                var resultFormatter = new ResultFomatter(_expressionResult);
+                resultFormatter.FormatTo(file);
+            }
+        }
 
-			if (!ConvertionTable.Instance.ConvertionExist(convertion)) {
-				throw new InvalidOperationException("kidding?");
-			}
+        private void ProcessConvertion(string raw)
+        {
+            Convertion convertion = _parser.ParseConvertion(raw);
 
-			ConvertionTable.Instance.AddConvertion(convertion);
-		}
+            if (!ConvertionTable.Instance.ConvertionExist(convertion))
+            {
+                throw new InvalidOperationException("kidding?");
+            }
 
-		private void ProcessExpression(string line) {
-			var expression = _parser.ParseExpression(line);
-			_expressionResult.Add(expression);
-		}
-	}
+            ConvertionTable.Instance.AddConvertion(convertion);
+        }
+
+        private void ProcessExpression(string line)
+        {
+            Expression expression = _parser.ParseExpression(line);
+            _expressionResult.Add(expression);
+        }
+    }
 }

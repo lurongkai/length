@@ -1,36 +1,36 @@
-using System;
-
 namespace Oops
 {
-	public class ExpressionParser
-	{
-		public Expression ParseExpression(string expressionRaw) {
-			var parseUtil = new ParseUtil(expressionRaw);
-			
-			var firstExpression = ParseValueExpression(parseUtil);
-			Expression finalExpression = firstExpression;
-			while (!parseUtil.EndOfLine) {
-				var operatorRaw = parseUtil.ReadToken();
-				var theOperator = Operator.Parse(operatorRaw);
-				var rightExpression = ParseValueExpression(parseUtil);
-				finalExpression = new OperatorExpression(firstExpression, theOperator, rightExpression); 
-			}
+    public class ExpressionParser
+    {
+        public Expression ParseExpression(string expressionRaw)
+        {
+            var parseUtil = new ParseUtil(expressionRaw);
 
-			return finalExpression;
-		}
+            ValueExpression firstExpression = ParseValueExpression(parseUtil);
+            Expression finalExpression = firstExpression;
+            while (!parseUtil.EndOfLine)
+            {
+                string operatorRaw = parseUtil.ReadToken();
+                Operator theOperator = Operator.Parse(operatorRaw);
+                ValueExpression rightExpression = ParseValueExpression(parseUtil);
+                finalExpression = new OperatorExpression(firstExpression, theOperator, rightExpression);
+            }
 
-		private ValueExpression ParseValueExpression(ParseUtil parseUtil){		
-			var rawSourceValue = parseUtil.ReadToken();
-			var rawSourceUnit = parseUtil.ReadToken();
+            return finalExpression;
+        }
+
+        private ValueExpression ParseValueExpression(ParseUtil parseUtil)
+        {
+            string rawSourceValue = parseUtil.ReadToken();
+            string rawSourceUnit = parseUtil.ReadToken();
 
 
-			var sourceValueDecimal = decimal.Parse(rawSourceValue);
-			var sourceUnit = Unit.Parse(rawSourceUnit);
+            decimal sourceValueDecimal = decimal.Parse(rawSourceValue);
+            Unit sourceUnit = Unit.Parse(rawSourceUnit);
 
-			var sourceValue = new GenericValue(sourceValueDecimal, sourceUnit);
+            var sourceValue = new GenericValue(sourceValueDecimal, sourceUnit);
 
-			return new ValueExpression(sourceValue);
-		}
-	}
+            return new ValueExpression(sourceValue);
+        }
+    }
 }
-
